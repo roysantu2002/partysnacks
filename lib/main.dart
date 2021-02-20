@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
 */
 
 import 'package:flutter/material.dart';
-// import 'package:partysnacks/screens/initial.dart';
+import 'package:partysnacks/screens/start.dart';
 import 'package:partysnacks/screens/splashScreen.dart';
 
 /*void main() => runApp(MaterialApp(
@@ -86,7 +86,7 @@ class MyApp extends StatelessWidget {
       //initialRoute: '/', // default is '/'
       routes: {
         // '/': (ctx) => SplashScreen(),
-        // "/home": (ctx) => Initial(),
+        "/home": (ctx) => Start(),
       },
     );
   }

@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "915146599372",
+    "firebase_url": "https://react-19b73.firebaseio.com",
+    "project_id": "react-19b73",
+    "storage_bucket": "react-19b73.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:915146599372:android:88104cebd291d4d7f24b69",
+        "android_client_info": {
+          "package_name": "com.example.partysnacks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "915146599372-5p8k8a0iviemrqcemms2o6kqcrk1gop0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.partysnacks",
+            "certificate_hash": "90c6e9db33019f401c234095d5a393288aa27f30"
+          }
+        },
+        {
+          "client_id": "915146599372-u2nfgfot6sr949qpl1l8n8hp5bfufi1i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOHc3XDizU0JROdu4uKRI-OfJZiZlqLuc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "915146599372-u2nfgfot6sr949qpl1l8n8hp5bfufi1i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
