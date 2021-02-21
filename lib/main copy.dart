@@ -28,10 +28,6 @@ import 'package:partysnacks/screens/start.dart';
 import 'package:partysnacks/screens/authScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:partysnacks/screens/splashScreen.dart';
-import 'package:provider/provider.dart';
-import 'package:partysnacks/services/auth_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:partysnacks/screens/home/home_page.dart';
 
 /*void main() => runApp(MaterialApp(
         */ /* title: 'Flutter Demo',
@@ -92,42 +88,27 @@ void main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        Provider<AuthService>(
-          create: (_) => AuthService(FirebaseAuth.instance),
-        ),
-        StreamProvider(
-          create: (context) => context.read<AuthService>().authStateChanges,
-        ),
-      ],
-      child: MaterialApp(
-        theme: ThemeData(
-            primaryColor: Colors.red, accentColor: Colors.yellowAccent),
-        debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
-        //initialRoute: '/', // default is '/'
-        routes: {
-          // '/': (ctx) => SplashScreen(),
-          // "/home": (ctx) => Start(),
-          "/home": (ctx) => AuthenticationWrapper(),
-        },
-      ),
+    return MaterialApp(
+      theme:
+          ThemeData(primaryColor: Colors.red, accentColor: Colors.yellowAccent),
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
+      //initialRoute: '/', // default is '/'
+      routes: {
+        // '/': (ctx) => SplashScreen(),
+        // "/home": (ctx) => Start(),
+        "/home": (ctx) => AuthScreen(),
+      },
     );
   }
 }
 
 class AuthenticationWrapper extends StatelessWidget {
-  const AuthenticationWrapper({
-    Key key,
-  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final firebaseuser = context.watch<User>();
-    if (firebaseuser != null) {
-      print(firebaseuser.uid);
-      return HomePage();
-    }
-    return AuthScreen();
+    return Container(
+      
+    );
   }
 }
+

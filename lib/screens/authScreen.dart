@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partysnacks/services/auth_service.dart';
+import 'package:provider/provider.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -53,7 +54,7 @@ class AuthCard extends StatefulWidget {
 }
 
 class _AuthCardState extends State<AuthCard> {
-  final AuthService _auth = AuthService();
+  // final AuthService _auth = AuthService();
   bool loading = false;
   bool val = false;
   String error = '';
@@ -77,14 +78,20 @@ class _AuthCardState extends State<AuthCard> {
       _isLoading = true;
     });
     if (_authMode == AuthMode.Login) {
-      dynamic result = await _auth.signInWithEmailAndPassword(
-          _authData['email'], _authData['password']);
+      dynamic result = await context
+          .read<AuthService>()
+          .signInWithEmailAndPassword(
+              _authData['email'], _authData['password']);
+      // dynamic result = await _auth.signInWithEmailAndPassword(
+      //     _authData['email'], _authData['password']);
       if (result == null) {
         setState(() => error = 'Couldn\'t signin');
       }
     } else {
-      dynamic result = await _auth.registerWithEmailAndPassword(
-          _authData['email'], _authData['password'], providerReceiver);
+      dynamic result = await context
+          .read<AuthService>()
+          .registerWithEmailAndPassword(
+              _authData['email'], _authData['password'], providerReceiver);
       if (result == null) {
         setState(() => error = 'please supply a valid data');
       }

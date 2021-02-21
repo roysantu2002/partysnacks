@@ -38,12 +38,13 @@ class AuthService {
   }
 
   // sign in with email and password
-  Future signInWithEmailAndPassword(String email, String password) async {
+  Future<String> signInWithEmailAndPassword(
+      String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User user = userCredential.user;
-      return user;
+      return user.toString();
     } catch (error) {
       print(error.toString());
       return null;
@@ -51,7 +52,7 @@ class AuthService {
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(
+  Future<String> registerWithEmailAndPassword(
       String email, String password, String mode) async {
     try {
       UserCredential userCredential = await _auth
@@ -60,7 +61,7 @@ class AuthService {
       print("userID--------$user.uid");
 
       //await DatabaseService(uid: user.uid).updateUserData(mode, email);
-      return user;
+      return user.toString();
     } catch (error) {
       print(error.message.toString());
       return null;
