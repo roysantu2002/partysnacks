@@ -71,9 +71,9 @@ class _AuthCardState extends State<AuthCard> {
   var _isLoading = false;
   final _passwordController = TextEditingController();
 
-  Future<void> _googleSignIn() async {
-    dynamic result = await context.read<AuthService>().signInWithGoogle();
-  }
+  // Future<void> _googleSignIn() async {
+  //   dynamic result = await context.read<AuthService>().signInWithGoogle();
+  // }
 
   Future<void> _submit() async {
     if (!_formKey.currentState.validate()) {
@@ -250,11 +250,11 @@ class _AuthCardState extends State<AuthCard> {
                   textColor: Color(0xffF8D774),
                   //textColor: Theme.of(context).primaryColor,
                 ),
-                SignInButton(
-                  Buttons.Google,
-                  text: "Sign in with Google",
-                  onPressed: _googleSignIn,
-                )
+                // SignInButton(
+                //   Buttons.Google,
+                //   text: "Sign in with Google",
+                //   onPressed: _googleSignIn,
+                // )
               ],
             ),
           ),
