@@ -1,6 +1,5 @@
-import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:haanzi_main/services/auth.dart';
+import 'package:partysnacks/services/auth_service.dart';
 
 enum AuthMode { Signup, Login }
 
@@ -10,20 +9,9 @@ class AuthScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
-    // final transformConfig = Matrix4.rotationZ(-8 * pi / 180);
-    // transformConfig.translate(-10.0);
     return Scaffold(
-      // resizeToAvoidBottomInset: false,
       body: Stack(
         children: <Widget>[
-//          Container(
-//            decoration: BoxDecoration(
-//              image: DecorationImage(
-//                image: AssetImage('images/home-auth.png'),
-//                fit: BoxFit.cover,home-auth.png
-//              ),
-//            ),
-//          ),
           SingleChildScrollView(
             child: Container(
               decoration: BoxDecoration(
@@ -32,7 +20,6 @@ class AuthScreen extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-              //margin: EdgeInsets.fromLTRB(0.00, 20.00, 0.00, 0.00),
               height: deviceSize.height,
               width: deviceSize.width,
               child: Column(

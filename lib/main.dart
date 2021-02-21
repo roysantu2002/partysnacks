@@ -23,6 +23,8 @@ class MyApp extends StatelessWidget {
 
 import 'package:flutter/material.dart';
 import 'package:partysnacks/screens/start.dart';
+import 'package:partysnacks/screens/authScreen.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:partysnacks/screens/splashScreen.dart';
 
 /*void main() => runApp(MaterialApp(
@@ -68,13 +70,19 @@ void main() => runApp(new MaterialApp(
 
 //---------------
 
-void main() => runApp(MyApp());
+// void main() => runApp(MyApp());
 
 /*
 var routes = <String, WidgetBuilder>{
   "/home": (BuildContext context) => Wrapper(),
 };
 */
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -86,7 +94,8 @@ class MyApp extends StatelessWidget {
       //initialRoute: '/', // default is '/'
       routes: {
         // '/': (ctx) => SplashScreen(),
-        "/home": (ctx) => Start(),
+        // "/home": (ctx) => Start(),
+        "/home": (ctx) => AuthScreen(),
       },
     );
   }
