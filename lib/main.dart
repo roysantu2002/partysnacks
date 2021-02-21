@@ -32,7 +32,7 @@ import 'package:provider/provider.dart';
 import 'package:partysnacks/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:partysnacks/screens/home/home_page.dart';
-
+import 'package:partysnacks/screens/initial/initial_page.dart';
 /*void main() => runApp(MaterialApp(
         */ /* title: 'Flutter Demo',
         theme: ThemeData(
@@ -128,6 +128,6 @@ class AuthenticationWrapper extends StatelessWidget {
       print(firebaseuser.uid);
       return HomePage();
     }
-    return AuthScreen();
+    return InitialPage();
   }
 }
