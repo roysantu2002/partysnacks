@@ -190,6 +190,7 @@ class _ProfileCardState extends State<ProfileCard> {
     var _imageURL = await _storage.ref().child(filepath).getDownloadURL();
     _authData['pic'] = _imageURL;
 
+    var uid = "test";
     await DatabaseService(uid: uid).updateUserProfile(
         uid,
         _authData['pic'],

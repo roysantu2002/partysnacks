@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-// import 'package:partysnacks/services/database.dart';
+import 'package:partysnacks/services/database.dart';
 // import 'package:partysnacks/models/user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -101,7 +101,7 @@ class AuthService {
       User user = userCredential.user;
       print("userID--------$user.uid");
 
-      //await DatabaseService(uid: user.uid).updateUserData(mode, email);
+      await DatabaseService(uid: user.uid).updateUserData(email);
       return user;
     } catch (error) {
       print(error.message.toString());

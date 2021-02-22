@@ -6,13 +6,13 @@ import 'package:partysnacks/common/common.dart';
 
 class DatabaseService {
   final String uid;
-  
+
   FirebaseFirestore firestore = FirebaseFirestore.instance;
 
   DatabaseService({this.uid});
   // collection reference
 
-  Future<void> updateUserData(String mode, String email) async {
+  Future<void> updateUserData(String email) async {
     CollectionReference userCollection = firestore.collection('users');
 
     print("New Useer---------$uid");
@@ -20,7 +20,7 @@ class DatabaseService {
     return await userCollection.doc(uid).set({
       'uid': uid,
       'email': email,
-      'mode': mode,
+      'admin': false,
       'date': currDate,
       'pic': '',
       'name': '',

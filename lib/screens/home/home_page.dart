@@ -6,7 +6,7 @@ import 'package:partysnacks/screens/nav/nav.dart';
 class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-   return MaterialApp(
+    return MaterialApp(
       title: 'Bottom Navigation Bar Tutorial',
       home: Nav(),
     );

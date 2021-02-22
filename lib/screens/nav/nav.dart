@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:partysnacks/screens/nav/home_screen.dart';
+import 'package:partysnacks/screens/nav/profile.dart';
 
 class Nav extends StatefulWidget {
   @override
@@ -11,7 +12,7 @@ class _NavState extends State<Nav> {
   List<Widget> _widgetOptions = <Widget>[
     Home(),
     Text('Messgaes Screen'),
-    Text('Profile Screen'),
+    Profile(),
   ];
 
   void _onItemTap(int index) {
