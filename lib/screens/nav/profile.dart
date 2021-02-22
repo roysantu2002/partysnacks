@@ -1,4 +1,5 @@
 // import 'package:haanzi_main/models/user.dart';
+import 'package:partysnacks/models/user.dart';
 import 'package:partysnacks/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:partysnacks/services/database.dart';
@@ -6,7 +7,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:io';
 import 'package:path/path.dart';
-import 'package:provider/provider.dart';
+// import 'package:provider/provider.dart';
 // import 'package:haanzi_main/models/user.dart';
 import 'package:partysnacks/common/util.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
@@ -24,8 +25,6 @@ class _ProfileScreenState extends State<Profile>
     with SingleTickerProviderStateMixin {
   File _image;
 
-  //print("AAAAAAAAAAA $uid");
-
   // print(currentUser.uid);
 
   bool _status = true;
@@ -41,14 +40,14 @@ class _ProfileScreenState extends State<Profile>
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
 
-    Future getImage() async {
-      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    // Future getImage() async {
+    //   var image = await ImagePicker.pickImage(source: ImageSource.gallery);
 
-      setState(() {
-        _image = image;
-        print('Image Path $_image');
-      });
-    }
+    //   setState(() {
+    //     _image = image;
+    //     print('Image Path $_image');
+    //   });
+    // }
 
     return Scaffold(
       appBar: AppBar(
@@ -98,10 +97,12 @@ class ProfileCard extends StatefulWidget {
 
 class _ProfileCardState extends State<ProfileCard> {
   //final AuthService _auth = AuthService();
+
   bool loading = false;
   bool val = false;
   String error = '';
-  File _image;
+  // File _image;
+  PickedFile _image;
 
   void showLongToast() {
     Fluttertoast.showToast(
@@ -138,14 +139,14 @@ class _ProfileCardState extends State<ProfileCard> {
   var _isLoading = false;
   //final _passwordController = TextEditingController();
 
-  Future<void> _submit() async {
+  Future<void> _submit(BuildContext context) async {
     //var uid = AuthService().userid();
     //print("AAAAAAAAAAA $uid");
-    // final uid =  context.read<AuthService>().getCurrentUID();
+    final uid = await context.read<AuthService>().getCurrentUID();
     // final FirebaseAuth _auth = FirebaseAuth.instance;
     // final FirebaseUser currentUser = await _auth.currentUser();
     // var uid = currentUser.uid;
-    // print("AAAAAAAAAAA $uid");
+    print("AAAAAAAAAAA $uid");
 
     //String fileName = basename(_image.path);
 
@@ -167,30 +168,26 @@ class _ProfileCardState extends State<ProfileCard> {
       _isLoading = false;
     });
 
-    if (_image == null) {
-      util.showMessage("Set profile image");
-    }
+    // if (_image == null) {
+    //   util.showMessage("Set profile image");
+    // }
 
     final firebase_storage.FirebaseStorage _storage =
         firebase_storage.FirebaseStorage.instanceFor(
             bucket: 'gs://haanzi-c7870.appspot.com');
-    final String filepath =
-        '/images/profileImages/$context.read<AuthService>().getCurrentUID()' +
-            '.png';
+    final String filepath = '/images/profileImages/$uid' + '.png';
 
     //print("TODO-01");
     print(filepath);
     /* print(_loader);*/
     //_storage = FirebaseStorage(storageBucket: 'gs://haanzi-c7870.appspot.com');
 
-    firebase_storage.UploadTask _uploadTask;
-
-    _uploadTask = _storage.ref().child(filepath).putFile(_image);
-
-    var _imageURL = await _storage.ref().child(filepath).getDownloadURL();
-    _authData['pic'] = _imageURL;
-
-    var uid = "test";
+    if (_image != null) {
+      firebase_storage.UploadTask _uploadTask;
+      _uploadTask = _storage.ref().child(filepath).putFile(File(_image.path));
+      var _imageURL = await _storage.ref().child(filepath).getDownloadURL();
+      _authData['pic'] = _imageURL;
+    }
     await DatabaseService(uid: uid).updateUserProfile(
         uid,
         _authData['pic'],
@@ -200,8 +197,9 @@ class _ProfileCardState extends State<ProfileCard> {
         _authData['pin']);
   }
 
-  Future<void> getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+  Future<void> pickImage() async {
+    final ImagePicker _imagepicker = ImagePicker();
+    final image = await _imagepicker.getImage(source: ImageSource.gallery);
 
     setState(() {
       _image = image;
@@ -235,14 +233,14 @@ class _ProfileCardState extends State<ProfileCard> {
   @override
   Widget build(BuildContext context) {
     final uid = context.read<AuthService>().getCurrentUID();
+
     print(uid);
 
     Future<void> _loadImage() async {
       // final FirebaseAuth _auth = FirebaseAuth.instance;
-      final uid = context.read<AuthService>().getCurrentUID();
+      // final uid = context.read<AuthService>().getCurrentUID();
       // final FirebaseUser currentUser = await _auth.currentUser();
       // var uid = currentUser.uid;
-      print("AAAAAAAAAAA $uid");
     }
 
     //final uid = AuthService().userid();
@@ -288,10 +286,7 @@ class _ProfileCardState extends State<ProfileCard> {
                                     width: 130.0,
                                     height: 130.0,
                                     child: (_image != null)
-                                        ? Image.file(
-                                            _image,
-                                            fit: BoxFit.fill,
-                                          )
+                                        ? FileImage(File(_image.path))
                                         : Image.asset(
                                             'images/as.png',
                                             fit: BoxFit.fill,
@@ -313,7 +308,7 @@ class _ProfileCardState extends State<ProfileCard> {
                                       size: 30.0,
                                     ),
                                     onPressed: () {
-                                      getImage();
+                                      pickImage();
                                     },
                                   )
                                 ],
@@ -324,7 +319,7 @@ class _ProfileCardState extends State<ProfileCard> {
                   ),
                 ),
                 TextFormField(
-                  decoration: InputDecoration(labelText: 'Name'),
+                  decoration: InputDecoration(labelText: "Name"),
                   validator: (value) {
                     if (value.isEmpty || value.length < 5) {
                       return 'Invalid Name!';
@@ -372,7 +367,7 @@ class _ProfileCardState extends State<ProfileCard> {
                     decoration: InputDecoration(labelText: 'Pin Code'),
                     //controller: _passwordController,
                     validator: (value) {
-                      if (value.isEmpty || value.length < 7) {
+                      if (value.isEmpty || value.length < 6) {
                         return 'Pin is too short Number!';
                       }
                       return null;
@@ -409,7 +404,7 @@ class _ProfileCardState extends State<ProfileCard> {
 
                               //color:  color: Theme.of(context).backgroundColor),
                               onPressed: () {
-                                _submit();
+                                _submit(context);
                               },
 
                               shape: new RoundedRectangleBorder(

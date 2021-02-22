@@ -57,7 +57,7 @@ class AuthService {
 
   // GET UID
   Future<String> getCurrentUID() async {
-    return _auth.currentUser.uid;
+    return _auth.currentUser.uid.toString();
   }
 
   // // auth change user stream
