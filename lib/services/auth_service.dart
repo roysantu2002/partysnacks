@@ -22,6 +22,19 @@ class AuthService {
 
   final FirebaseAuth _auth;
   final GoogleSignIn gooleSignIn = GoogleSignIn();
+
+  Future<String> onStartup() async {
+    String retVal = "error";
+    try {
+      User _user = _auth.currentUser;
+      _uid = _user.uid;
+      _email = _user.email;
+      retVal = "success";
+    } catch (e) {
+      print(e);
+    }
+    return retVal;
+  }
   //  FirebaseFirestore firestore = FirebaseFirestore.instance;
   //    CollectionReference userCollection = firestore.collection('users');
 
@@ -98,6 +111,7 @@ class AuthService {
       if (userCredential.user != null) {
         _uid = userCredential.user.uid;
         _email = userCredential.user.email;
+        print(_uid + _email);
         retVal = true;
       }
     } catch (e) {

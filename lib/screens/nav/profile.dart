@@ -23,8 +23,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileScreenState extends State<Profile>
     with SingleTickerProviderStateMixin {
-  File _image;
-
   // print(currentUser.uid);
 
   bool _status = true;
@@ -101,8 +99,9 @@ class _ProfileCardState extends State<ProfileCard> {
   bool loading = false;
   bool val = false;
   String error = '';
-  // File _image;
-  PickedFile _image;
+  File _image;
+  PickedFile _imageFile;
+  // PickedFile _image;
 
   void showLongToast() {
     Fluttertoast.showToast(
@@ -111,7 +110,7 @@ class _ProfileCardState extends State<ProfileCard> {
     );
   }
 
-  //static File _image;
+  // static File _image;
 
   //static final uid = AuthService().userid();
   //static final String filepath = 'images/$uid' + '.png';
@@ -139,14 +138,27 @@ class _ProfileCardState extends State<ProfileCard> {
   var _isLoading = false;
   //final _passwordController = TextEditingController();
 
+  Future<void> pickImage() async {
+    final ImagePicker _imagepicker = ImagePicker();
+    final image = await _imagepicker.getImage(source: ImageSource.gallery);
+
+    setState(() {
+      _imageFile = image;
+      // _image = Image.file(File(_imageFile.path));
+      print('Image Path $_image');
+    });
+  }
+
   Future<void> _submit(BuildContext context) async {
     //var uid = AuthService().userid();
     //print("AAAAAAAAAAA $uid");
-    final uid = context.read<AuthService>().getUid;
-    final email = context.read<AuthService>().getEmail;
+    String _returnString = await context.read<AuthService>().onStartup();
+    if (_returnString == "success") {}
+//
     // final FirebaseAuth _auth = FirebaseAuth.instance;
     // final FirebaseUser currentUser = await _auth.currentUser();
-    // var uid = currentUser.uid;
+    var uid = context.read<AuthService>().getUid;
+    var email = context.read<AuthService>().getEmail;
     print("AAAAAAAAAAA $uid");
     print("AAAAAAAAAAA $email");
 
@@ -186,7 +198,7 @@ class _ProfileCardState extends State<ProfileCard> {
 
     if (_image != null) {
       firebase_storage.UploadTask _uploadTask;
-      _uploadTask = _storage.ref().child(filepath).putFile(File(_image.path));
+      _uploadTask = _storage.ref().child(filepath).putFile(_image);
       var _imageURL = await _storage.ref().child(filepath).getDownloadURL();
       _authData['pic'] = _imageURL;
     }
@@ -197,16 +209,6 @@ class _ProfileCardState extends State<ProfileCard> {
         _authData['mobile'],
         _authData['address'],
         _authData['pin']);
-  }
-
-  Future<void> pickImage() async {
-    final ImagePicker _imagepicker = ImagePicker();
-    final image = await _imagepicker.getImage(source: ImageSource.gallery);
-
-    setState(() {
-      _image = image;
-      print('Image Path $_image');
-    });
   }
 
 /*  Future uploadPic(BuildContext context) async {
@@ -287,8 +289,11 @@ class _ProfileCardState extends State<ProfileCard> {
                                   child: new SizedBox(
                                     width: 130.0,
                                     height: 130.0,
-                                    child: (_image != null)
-                                        ? FileImage(File(_image.path))
+                                    child: (_imageFile != null)
+                                        ? Image.file(
+                                            File(_imageFile.path),
+                                            fit: BoxFit.fill,
+                                          )
                                         : Image.asset(
                                             'images/as.png',
                                             fit: BoxFit.fill,
