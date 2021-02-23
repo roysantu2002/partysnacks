@@ -4,7 +4,7 @@ import 'package:partysnacks/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:partysnacks/services/database.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:firebase_storage/firebase_storage.dart';
 import 'dart:io';
 import 'package:path/path.dart';
 // import 'package:provider/provider.dart';
@@ -13,6 +13,7 @@ import 'package:partysnacks/common/util.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class Profile extends StatefulWidget {
   @override
@@ -139,6 +140,10 @@ class _ProfileCardState extends State<ProfileCard> {
   //final _passwordController = TextEditingController();
 
   Future<void> pickImage() async {
+    // await Permission.photos.request();
+    // var permissionStatus = await Permission.photos.status;
+
+    // if (permissionStatus.isGranted) {
     final ImagePicker _imagepicker = ImagePicker();
     final image = await _imagepicker.getImage(source: ImageSource.gallery);
 
@@ -147,6 +152,7 @@ class _ProfileCardState extends State<ProfileCard> {
       // _image = Image.file(File(_imageFile.path));
       print('Image Path $_image');
     });
+   
   }
 
   Future<void> _submit(BuildContext context) async {
@@ -182,23 +188,28 @@ class _ProfileCardState extends State<ProfileCard> {
       _isLoading = false;
     });
 
-    // if (_image == null) {
-    //   util.showMessage("Set profile image");
-    // }
-
-    final firebase_storage.FirebaseStorage _storage =
-        firebase_storage.FirebaseStorage.instanceFor(
-            bucket: 'gs://haanzi-c7870.appspot.com');
-    final String filepath = '/images/profileImages/$uid' + '.png';
+    // if (_imageFile != null) {
 
     //print("TODO-01");
-    print(filepath);
+    // print(filepath);
     /* print(_loader);*/
     //_storage = FirebaseStorage(storageBucket: 'gs://haanzi-c7870.appspot.com');
 
-    if (_image != null) {
-      firebase_storage.UploadTask _uploadTask;
-      _uploadTask = _storage.ref().child(filepath).putFile(_image);
+    if (File(_imageFile.path) != null) {
+      final _storage = FirebaseStorage.instance;
+
+      // final firebase_storage.FirebaseStorage _storage =
+      //     firebase_storage.FirebaseStorage.instanceFor(
+      //         bucket: 'gs://haanzi-c7870.appspot.com');
+
+      final String filepath = '/images/profileImages/$uid' + '.png';
+
+      // firebase_storage.UploadTask _uploadTask;
+
+      // _uploadTask =
+      var file = File(_imageFile.path);
+      var snapshot = await _storage.ref().child(filepath).putFile(file);
+
       var _imageURL = await _storage.ref().child(filepath).getDownloadURL();
       _authData['pic'] = _imageURL;
     }
