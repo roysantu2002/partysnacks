@@ -1,24 +1,14 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:partysnacks/services/database.dart';
-import 'package:partysnacks/models/user.dart';
+// import 'package:partysnacks/models/user.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:provider/provider.dart';
+
 
 class AuthService {
   //final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  String _uid;
-  String _email;
-
-  String get getUid => _uid;
-  String get getEmail => _email;
-
-  // UserModel _currentUser;
-  // UserModel get getCurrentUserDetails => _currentUser;
 
   final FirebaseAuth _auth;
   final GoogleSignIn gooleSignIn = GoogleSignIn();
@@ -90,20 +80,16 @@ class AuthService {
   }
 
   // sign in with email and password
-  Future<bool> signInWithEmailAndPassword(String email, String password) async {
-    bool retVal = false;
+  Future signInWithEmailAndPassword(String email, String password) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
-      if (userCredential.user != null) {
-        _uid = userCredential.user.uid;
-        _email = userCredential.user.email;
-        retVal = true;
-      }
-    } catch (e) {
-      print(e);
+      User user = userCredential.user;
+      return user;
+    } catch (error) {
+      print(error.toString());
+      return null;
     }
-    return retVal;
   }
 
   // register with email and password

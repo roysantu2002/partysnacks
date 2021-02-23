@@ -142,11 +142,13 @@ class _ProfileCardState extends State<ProfileCard> {
   Future<void> _submit(BuildContext context) async {
     //var uid = AuthService().userid();
     //print("AAAAAAAAAAA $uid");
-    final uid = await context.read<AuthService>().getCurrentUID();
+    final uid = context.read<AuthService>().getUid;
+    final email = context.read<AuthService>().getEmail;
     // final FirebaseAuth _auth = FirebaseAuth.instance;
     // final FirebaseUser currentUser = await _auth.currentUser();
     // var uid = currentUser.uid;
     print("AAAAAAAAAAA $uid");
+    print("AAAAAAAAAAA $email");
 
     //String fileName = basename(_image.path);
 
